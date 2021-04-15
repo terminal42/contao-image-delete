@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file source-language="en" datatype="plaintext" original="file.ext">
+        <body>
+            <trans-unit id="headline">
+                <source>headline</source>
+                <target>Delete image and previews</target>
+            </trans-unit>
+            <trans-unit id="original">
+                <source>original</source>
+                <target>Original image</target>
+            </trans-unit>
+            <trans-unit id="assets">
+                <source>assets</source>
+                <target>Thumbnails</target>
+            </trans-unit>
+            <trans-unit id="empty">
+                <source>empty</source>
+                <target>There are no preview images for this file.</target>
+            </trans-unit>
+            <trans-unit id="submit">
+                <source>submit</source>
+                <target>Delete selected images</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

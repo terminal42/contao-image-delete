@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file source-language="en" datatype="plaintext" original="file.ext">
+        <body>
+            <trans-unit id="headline">
+                <source>headline</source>
+                <target>Bild sicher löschen</target>
+            </trans-unit>
+            <trans-unit id="original">
+                <source>original</source>
+                <target>Originalbild</target>
+            </trans-unit>
+            <trans-unit id="assets">
+                <source>assets</source>
+                <target>Vorschaubilder</target>
+            </trans-unit>
+            <trans-unit id="empty">
+                <source>empty</source>
+                <target>Für diese Datei wurden keine Vorschaubilder gefunden.</target>
+            </trans-unit>
+            <trans-unit id="submit">
+                <source>submit</source>
+                <target>Ausgewählte Bilder löschen</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

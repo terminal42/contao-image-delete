@@ -1,0 +1,22 @@
+services:
+    _defaults:
+        autoconfigure: false
+        autowire: false
+        public: false
+
+    Terminal42\ImageDeleteBundle\Controller\ImageDeleteController:
+        arguments:
+            - '@contao.framework'
+            - '@security.helper'
+            - '@twig'
+            - '@router'
+            - '@filesystem'
+            - '%kernel.project_dir%'
+            - '%contao.image.target_dir%'
+        public: true
+
+    Terminal42\ImageDeleteBundle\EventListener\FileDeleteOperationListener:
+        arguments:
+            - '@security.helper'
+            - '@router'
+            - '%kernel.project_dir%'
