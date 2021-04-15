@@ -44,7 +44,7 @@ class ImageDeleteController
     {
         $this->framework->initialize();
 
-        $fileModel = FilesModel::findByPath($request->query->get('path'));
+        $fileModel = FilesModel::findByPath(urldecode($request->query->get('path')));
 
         if (null === $fileModel) {
             throw new NotFoundHttpException();
