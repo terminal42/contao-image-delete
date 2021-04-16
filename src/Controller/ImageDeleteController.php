@@ -50,7 +50,7 @@ class ImageDeleteController
             throw new NotFoundHttpException();
         }
 
-        if (!$this->security->isGranted('contao_user.filemounts', dirname($fileModel->path)) || $this->security->isGranted('contao_user.fop.f3') || $this->security->isGranted('contao_user.fop.f4')) {
+        if (!$this->security->isGranted('contao_user.filemounts', dirname($fileModel->path)) || $this->security->isGranted('contao_user.fop', 'f3') || $this->security->isGranted('contao_user.fop', 'f4')) {
             throw new AccessDeniedException();
         }
 
