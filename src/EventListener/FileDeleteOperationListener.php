@@ -28,7 +28,7 @@ class FileDeleteOperationListener
         $this->projectDir = $projectDir;
     }
 
-    public function __invoke($row, $href, $label, $title, $icon, $attributes)
+    public function __invoke($row, $href, $label, $title, $icon, $attributes): string
     {
         if (null === $this->canDeleteFiles) {
             $this->canDeleteFiles = $this->security->isGranted('contao_user.fop', 'f3');
