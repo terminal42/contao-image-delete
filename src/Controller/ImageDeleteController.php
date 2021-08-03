@@ -50,7 +50,7 @@ class ImageDeleteController
             throw new NotFoundHttpException();
         }
 
-        if (!$this->security->isGranted('contao_user.filemounts', dirname($fileModel->path)) || $this->security->isGranted('contao_user.fop', 'f3') || $this->security->isGranted('contao_user.fop', 'f4')) {
+        if (!$this->security->isGranted('contao_user.filemounts', dirname($fileModel->path)) || !$this->security->isGranted('contao_user.fop', 'f3')) {
             throw new AccessDeniedException();
         }
 
@@ -79,7 +79,7 @@ class ImageDeleteController
                 $imagesToDelete[] = $fileModel->path;
             }
 
-            $imagesToDelete = array_map(fn($file) => $this->projectDir . '/' . $file, $imagesToDelete);
+            $imagesToDelete = array_map(fn ($file) => $this->projectDir . '/' . $file, $imagesToDelete);
             $this->filesystem->remove($imagesToDelete);
 
             return new RedirectResponse($this->router->generate('contao_backend', ['do' => 'files']));
