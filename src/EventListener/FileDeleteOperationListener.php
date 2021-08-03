@@ -31,7 +31,7 @@ class FileDeleteOperationListener
     public function __invoke($row, $href, $label, $title, $icon, $attributes)
     {
         if (null === $this->canDeleteFiles) {
-            $this->canDeleteFiles = $this->security->isGranted('ROLE_ADMIN') || (!$this->security->isGranted('contao_user.fop', 'f3') && !$this->security->isGranted('contao_user.fop', 'f4'));
+            $this->canDeleteFiles = $this->security->isGranted('contao_user.fop', 'f3');
         }
 
         $path = urldecode($row['id']);
