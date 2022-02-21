@@ -4,17 +4,22 @@
     "keywords": ["delete", "images", "license", "secure"],
     "type": "contao-bundle",
     "license": "MIT",
-    "authors": [{
-        "name": "terminal42 gmbh",
-        "homepage": "https://www.terminal42.ch"
-    }],
-    "funding": [{
-        "type": "github",
-        "url": "https://github.com/terminal42"
-    }, {
-        "type": "other",
-        "url": "https://ko-fi.com/terminal42"
-    }],
+    "authors": [
+        {
+            "name": "terminal42 gmbh",
+            "homepage": "https://www.terminal42.ch"
+        }
+    ],
+    "funding": [
+        {
+            "type": "github",
+            "url": "https://github.com/terminal42"
+        },
+        {
+            "type": "other",
+            "url": "https://ko-fi.com/terminal42"
+        }
+    ],
     "support": {
         "issues": "https://github.com/terminal42/contao-image-delete/issues",
         "source": "https://github.com/terminal42/contao-image-delete",
@@ -22,12 +27,7 @@
     },
     "require": {
         "php": "^7.4 || ^8.0",
-        "contao/core-bundle": "^4.9",
-        "symfony/config": "^4.4 || ^5.0",
-        "symfony/dependency-injection": "^4.4 || ^5.0",
-        "symfony/event-dispatcher": "^4.4 || ^5.0",
-        "symfony/http-kernel": "^4.4 || ^5.0",
-        "doctrine/dbal": "^2.11"
+        "contao/core-bundle": "^4.9"
     },
     "require-dev": {
         "contao/manager-plugin": "^2.0",
