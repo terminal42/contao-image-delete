@@ -30,8 +30,7 @@
         "contao/core-bundle": "^4.9"
     },
     "require-dev": {
-        "contao/manager-plugin": "^2.0",
-        "contao/easy-coding-standard": "^3.0"
+        "contao/manager-plugin": "^2.0"
     },
     "conflict": {
         "contao/manager-plugin": "<2.0 || >=3.0"
@@ -45,8 +44,11 @@
         "contao-manager-plugin": "Terminal42\\ImageDeleteBundle\\ContaoManager\\Plugin"
     },
     "scripts": {
-        "cs-fixer": [
-            "vendor/bin/ecs check src/ --fix --ansi"
-        ]
+        "cs-fixer": "tools/ecs/vendor/bin/ecs check src/ --fix --ansi"
+    },
+    "config": {
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
     }
 }

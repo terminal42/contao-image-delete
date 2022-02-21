@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Terminal42\ImageDeleteBundle\EventListener;
 
 use Contao\CoreBundle\ServiceAnnotation\Callback;
@@ -40,6 +42,6 @@ class FileDeleteOperationListener
             return System::importStatic(\tl_files::class)->deleteFile($row, $href, $label, $title, $icon, $attributes);
         }
 
-        return '<a href="' . $this->urlGenerator->generate('terminal42_image_delete', ['path' => $row['id']]) . '" title="' . StringUtil::specialchars($title) . '">' . Image::getHtml($icon, $label) . '</a> ';
+        return '<a href="'.$this->urlGenerator->generate('terminal42_image_delete', ['path' => $row['id']]).'" title="'.StringUtil::specialchars($title).'">'.Image::getHtml($icon, $label).'</a> ';
     }
 }
