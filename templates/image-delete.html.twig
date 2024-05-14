@@ -28,12 +28,12 @@
                     </tr>
                     <tr class="even click2edit toggle_select hover-row">
                         <td class="tl_file_list">
-                            <a href="{{ file.path|escape('html_attr') }}" onclick="Backend.openModalImage({'title':'{{ file.path|escape('js') }}','url':'{{ file.path|escape('js') }}'});return false">
-                                <img src="{{ file.path|escape('html_attr') }}" alt="" class="theme_preview" width="300">
+                            <a href="{{ file|escape('html_attr') }}" onclick="Backend.openModalImage({'title':'{{ file|escape('js') }}','url':'{{ file|escape('js') }}'});return false">
+                                <img src="{{ file|escape('html_attr') }}" alt="" class="theme_preview" width="300">
                             </a>
-                            <a href="{{ file.path|escape('html_attr') }}" target="_blank">{{ file.path }}</a>
+                            <a href="{{ file|escape('html_attr') }}" target="_blank">{{ file }}</a>
                         </td>
-                        <td class="tl_file_list tl_right_nowrap"><input type="checkbox" name="IDS[]" class="tl_tree_checkbox" value="{{ file.path|escape('html_attr') }}" checked></td>
+                        <td class="tl_file_list tl_right_nowrap"><input type="checkbox" name="IDS[]" class="tl_tree_checkbox" value="{{ file|escape('html_attr') }}" checked></td>
                     </tr>
                     <tr>
                         <td colspan="2" class="tl_folder_tlist">{{ 'assets'|trans }}</td>
