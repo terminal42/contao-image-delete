@@ -26,11 +26,12 @@
         "forum": "https://community.contao.org"
     },
     "require": {
-        "php": "^7.4 || ^8.0",
-        "contao/core-bundle": "^4.9"
+        "php": "^8.1",
+        "contao/core-bundle": "^4.13 || ^5.0"
     },
     "require-dev": {
-        "contao/manager-plugin": "^2.0"
+        "contao/manager-plugin": "^2.0",
+        "terminal42/contao-build-tools": "dev-main"
     },
     "conflict": {
         "contao/manager-plugin": "<2.0 || >=3.0"
@@ -43,12 +44,12 @@
     "extra": {
         "contao-manager-plugin": "Terminal42\\ImageDeleteBundle\\ContaoManager\\Plugin"
     },
-    "scripts": {
-        "cs-fixer": "tools/ecs/vendor/bin/ecs check src/ --fix --ansi"
-    },
     "config": {
         "allow-plugins": {
-            "dealerdirect/phpcodesniffer-composer-installer": true
+            "terminal42/contao-build-tools": true,
+            "contao-components/installer": false,
+            "contao/manager-plugin": false,
+            "php-http/discovery": false
         }
     }
 }

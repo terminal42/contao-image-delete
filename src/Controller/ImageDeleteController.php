@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Terminal42\ImageDeleteBundle\Controller;
 
+use Contao\CoreBundle\Csrf\ContaoCsrfTokenManager;
 use Contao\CoreBundle\Framework\ContaoFramework;
 use Contao\FilesModel;
 use Symfony\Component\Filesystem\Filesystem;
@@ -23,23 +24,16 @@ use Twig\Environment;
  */
 class ImageDeleteController
 {
-    private ContaoFramework $framework;
-    private Security $security;
-    private Environment $twig;
-    private RouterInterface $router;
-    private Filesystem $filesystem;
-    private string $projectDir;
-    private string $imageTargetDir;
-
-    public function __construct(ContaoFramework $framework, Security $security, Environment $twig, RouterInterface $router, Filesystem $filesystem, string $projectDir, string $imageTargetDir)
-    {
-        $this->framework = $framework;
-        $this->security = $security;
-        $this->twig = $twig;
-        $this->router = $router;
-        $this->filesystem = $filesystem;
-        $this->projectDir = $projectDir;
-        $this->imageTargetDir = $imageTargetDir;
+    public function __construct(
+        private readonly ContaoFramework $framework,
+        private readonly Security $security,
+        private readonly Environment $twig,
+        private readonly RouterInterface $router,
+        private readonly Filesystem $filesystem,
+        private readonly ContaoCsrfTokenManager $csrfTokenManager,
+        private readonly string $projectDir,
+        private readonly string $imageTargetDir,
+    ) {
     }
 
     public function __invoke(Request $request): Response
@@ -91,11 +85,11 @@ class ImageDeleteController
         return new Response($this->twig->render(
             '@Terminal42ImageDelete/image-delete.html.twig',
             [
-                'request_token' => REQUEST_TOKEN,
+                'request_token' => $this->csrfTokenManager->getDefaultTokenValue(),
                 'back' => $this->router->generate('contao_backend', ['do' => 'files']),
                 'file' => $fileModel,
                 'assets' => $assets,
-            ]
+            ],
         ));
     }
 }

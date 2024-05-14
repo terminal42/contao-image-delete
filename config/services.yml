@@ -1,8 +1,7 @@
 services:
     _defaults:
-        autoconfigure: false
+        autoconfigure: true
         autowire: false
-        public: false
 
     Terminal42\ImageDeleteBundle\Controller\ImageDeleteController:
         arguments:
@@ -11,6 +10,7 @@ services:
             - '@twig'
             - '@router'
             - '@filesystem'
+            - '@contao.csrf.token_manager'
             - '%kernel.project_dir%'
             - '%contao.image.target_dir%'
         public: true
