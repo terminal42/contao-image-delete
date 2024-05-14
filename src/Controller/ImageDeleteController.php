@@ -41,11 +41,11 @@ class ImageDeleteController
         $path = urldecode($request->query->get('path'));
 
         if (!$this->filesystem->exists($this->projectDir.'/'.$path) || !is_file($this->projectDir.'/'.$path)) {
-            throw new NotFoundHttpException();
+            throw new NotFoundHttpException('File "'.$path.'" was not found.');
         }
 
         if (!$this->security->isGranted('contao_user.filemounts', \dirname($path)) || !$this->security->isGranted('contao_user.fop', 'f3')) {
-            throw new AccessDeniedException();
+            throw new AccessDeniedException('No permissions to access "'.\dirname($path).'" or delete files.');
         }
 
         $assetsDir = ltrim(str_replace($this->projectDir, '', $this->imageTargetDir), '/');
