@@ -24,6 +24,9 @@ class Plugin implements BundlePluginInterface, RoutingPluginInterface
 
     public function getRouteCollection(LoaderResolverInterface $resolver, KernelInterface $kernel)
     {
-        return $resolver->resolve('@Terminal42ImageDeleteBundle/src/Controller')->load('@Terminal42ImageDeleteBundle/src/Controller');
+        return $resolver
+            ->resolve(__DIR__.'/../../config/routes.php')
+            ->load(__DIR__.'/../../config/routes.php')
+        ;
     }
 }

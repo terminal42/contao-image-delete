@@ -10,7 +10,7 @@ use Contao\Image;
 use Contao\StringUtil;
 use Contao\System;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Component\Security\Core\Security;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 #[AsCallback(table: 'tl_files', target: 'list.operations.delete.button')]
 class FileDeleteOperationListener
@@ -18,7 +18,7 @@ class FileDeleteOperationListener
     private bool|null $canDeleteFiles = null;
 
     public function __construct(
-        private readonly Security $security,
+        private readonly AuthorizationCheckerInterface $authorizationChecker,
         private readonly UrlGeneratorInterface $urlGenerator,
         private readonly string $projectDir,
     ) {
@@ -27,7 +27,7 @@ class FileDeleteOperationListener
     public function __invoke(array $row, string|null $href, string|null $label, string|null $title, string|null $icon, string|null $attributes): string
     {
         if (null === $this->canDeleteFiles) {
-            $this->canDeleteFiles = $this->security->isGranted('contao_user.fop', 'f3');
+            $this->canDeleteFiles = $this->authorizationChecker->isGranted('contao_user.fop', 'f3');
         }
 
         $path = urldecode((string) $row['id']);

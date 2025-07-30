@@ -1,13 +1,7 @@
-{% extends "@ContaoCore/Backend/be_page.html.twig" %}
 {% trans_default_domain 'terminal42_image_delete' %}
+{% extends "@Contao/be_main.html.twig" %}
 
-{% block headline %}
-{% trans %}headline{% endtrans %}
-{% endblock %}
-
-{% block error %}{% endblock %}
-
-{% block main %}
+{% block main_content %}
     <div id="tl_buttons">
         <a href="{{ back }}" class="header_back" title="{{ 'MSC.backBTTitle'|trans({}, 'contao_default') }}" accesskey="b">{{ 'MSC.backBT'|trans({}, 'contao_default') }}</a>
     </div>
@@ -28,31 +22,29 @@
                     </tr>
                     <tr class="even click2edit toggle_select hover-row">
                         <td class="tl_file_list">
-                            <a href="{{ file|escape('html_attr') }}" onclick="Backend.openModalImage({'title':'{{ file|escape('js') }}','url':'{{ file|escape('js') }}'});return false">
-                                <img src="{{ file|escape('html_attr') }}" alt="" class="theme_preview" width="300">
+                            <a href="/{{ file|escape('html_attr') }}" onclick="Backend.openModalImage({'title':'{{ file|escape('js') }}','url':'/{{ file|escape('js') }}'});return false">
+                                <img src="/{{ file|escape('html_attr') }}" alt="" class="theme_preview" style="max-width:300px">
                             </a>
-                            <a href="{{ file|escape('html_attr') }}" target="_blank">{{ file }}</a>
+                            <a href="/{{ file|escape('html_attr') }}" target="_blank">{{ file }}</a>
                         </td>
                         <td class="tl_file_list tl_right_nowrap"><input type="checkbox" name="IDS[]" class="tl_tree_checkbox" value="{{ file|escape('html_attr') }}" checked></td>
                     </tr>
                     <tr>
                         <td colspan="2" class="tl_folder_tlist">{{ 'assets'|trans }}</td>
                     </tr>
-                    {% if assets %}
-                    {% for asset in assets %}
-                    <tr class="even click2edit toggle_select hover-row">
-                        <td class="tl_file_list">
-                            <a href="{{ asset|escape('html_attr') }}" onclick="Backend.openModalImage({'width':600,'title':'{{ asset|escape('js') }}','url':'{{ asset|escape('js') }}'});return false">
-                                <img src="{{ asset|escape('html_attr') }}" alt="" class="theme_preview" width="200">
-                            </a>
-                            <a href="{{ asset|escape('html_attr') }}" target="_blank">{{ asset }}</a>
-                        </td>
-                        <td class="tl_file_list tl_right_nowrap"><input type="checkbox" name="IDS[]" class="tl_tree_checkbox" value="{{ asset|escape('html_attr') }}"></td>
-                    </tr>
-                    {% endfor %}
+                    {% for id, asset in assets %}
+                        <tr class="even click2edit toggle_select hover-row">
+                            <td class="tl_file_list">
+                                <a href="/{{ asset|escape('html_attr') }}" onclick="Backend.openModalImage({'width':600,'title':'{{ asset|escape('js') }}','url':'/{{ asset|escape('js') }}'});return false">
+                                    <img src="/{{ asset|escape('html_attr') }}" alt="" class="theme_preview" style="max-width:200px">
+                                </a>
+                                <a href="{{ asset|escape('html_attr') }}" target="_blank">{{ asset }}</a>
+                            </td>
+                            <td class="tl_file_list tl_right_nowrap"><input type="checkbox" name="IDS[]" class="tl_tree_checkbox" value="{{ id|escape('html_attr') }}"></td>
+                        </tr>
                     {% else %}
                         <td colspan="2" class="tl_file_list"><i>{{ 'empty'|trans }}</i></td>
-                    {% endif %}
+                    {% endfor %}
                 </table>
             </div>
         </div>
