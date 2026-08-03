@@ -4,38 +4,47 @@ declare(strict_types=1);
 
 namespace Terminal42\ImageDeleteBundle\EventListener;
 
+use Contao\CoreBundle\DataContainer\DataContainerOperation;
 use Contao\CoreBundle\DependencyInjection\Attribute\AsCallback;
 use Contao\File;
-use Contao\Image;
-use Contao\StringUtil;
 use Contao\System;
+use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Contracts\Service\ResetInterface;
 
 #[AsCallback(table: 'tl_files', target: 'list.operations.delete.button')]
-class FileDeleteOperationListener
+class FileDeleteOperationListener implements ResetInterface
 {
     private bool|null $canDeleteFiles = null;
 
     public function __construct(
-        private readonly AuthorizationCheckerInterface $authorizationChecker,
+        private readonly Security $security,
         private readonly UrlGeneratorInterface $urlGenerator,
-        private readonly string $projectDir,
+        #[Autowire(param: 'kernel.project_dir')] private readonly string $projectDir,
     ) {
     }
 
-    public function __invoke(array $row, string|null $href, string|null $label, string|null $title, string|null $icon, string|null $attributes): string
+    public function __invoke(DataContainerOperation $operation): void
     {
         if (null === $this->canDeleteFiles) {
-            $this->canDeleteFiles = $this->authorizationChecker->isGranted('contao_user.fop', 'f3');
+            $this->canDeleteFiles = $this->security->isGranted('contao_user.fop', 'f3');
         }
 
-        $path = urldecode((string) $row['id']);
+        $path = urldecode((string) $operation->getRecord()['id']);
 
         if (!$this->canDeleteFiles || is_dir($this->projectDir.'/'.$path) || !(new File($path))->isImage) {
-            return System::importStatic(\tl_files::class)->deleteFile($row, $href, $label, $title, $icon, $attributes);
+            System::importStatic(\tl_files::class)->deleteFile($operation);
+
+            return;
         }
 
-        return '<a href="'.$this->urlGenerator->generate('terminal42_image_delete', ['path' => $row['id']]).'" title="'.StringUtil::specialchars($title).'">'.Image::getHtml($icon, $label).'</a> ';
+        $operation->setUrl($this->urlGenerator->generate('terminal42_image_delete', ['path' => $operation->getRecord()['id']]));
+        $operation['attributes']->unset('onclick');
+    }
+
+    public function reset(): void
+    {
+        $this->canDeleteFiles = null;
     }
 }

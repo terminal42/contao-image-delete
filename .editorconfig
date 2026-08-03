@@ -9,11 +9,12 @@ end_of_line = lf
 insert_final_newline = true
 trim_trailing_whitespace = true
 
-[*.{php,twig,yml}]
+[*.{php,twig,yml,json}]
 indent_style = space
 indent_size = 4
 
-[*.html5]
-indent_style = space
-indent_size = 2
+[*.{svg,min.css,min.js}]
 insert_final_newline = false
+
+[*.md]
+trim_trailing_whitespace = false

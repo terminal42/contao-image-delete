@@ -26,8 +26,17 @@
         "forum": "https://community.contao.org"
     },
     "require": {
-        "php": "^8.1",
-        "contao/core-bundle": "^4.13 || ^5.0"
+        "php": "^8.3",
+        "contao/core-bundle": "^5.7",
+        "symfony/config": "^7.4",
+        "symfony/dependency-injection": "^7.4",
+        "symfony/filesystem": "^7.4",
+        "symfony/finder": "^7.4",
+        "symfony/http-foundation": "^7.4",
+        "symfony/http-kernel": "^7.4",
+        "symfony/routing": "^7.4",
+        "symfony/security-bundle": "^7.4",
+        "symfony/service-contracts": "^3"
     },
     "require-dev": {
         "contao/manager-plugin": "^2.0",

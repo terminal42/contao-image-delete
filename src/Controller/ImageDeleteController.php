@@ -4,51 +4,52 @@ declare(strict_types=1);
 
 namespace Terminal42\ImageDeleteBundle\Controller;
 
-use Contao\CoreBundle\Controller\AbstractBackendController;
-use Contao\CoreBundle\Csrf\ContaoCsrfTokenManager;
-use Contao\CoreBundle\Framework\ContaoFramework;
+use Contao\CoreBundle\Controller\Backend\AbstractBackendController;
+use Contao\CoreBundle\Security\ContaoCorePermissions;
+use Contao\CoreBundle\Security\DataContainer\DeleteAction;
+use Contao\FilesModel;
+use Contao\System;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\Routing\Attribute\Route;
 
+#[AsController]
+#[Route('%contao.backend.route_prefix%/image-delete', 'terminal42_image_delete', defaults: ['_scope' => 'backend', '_token_check' => true])]
 class ImageDeleteController extends AbstractBackendController
 {
     public function __construct(
-        private readonly ContaoFramework $framework,
-        private readonly AuthorizationCheckerInterface $authorizationChecker,
-        private readonly RouterInterface $router,
         private readonly Filesystem $filesystem,
-        private readonly ContaoCsrfTokenManager $csrfTokenManager,
-        private readonly string $projectDir,
-        private readonly string $imageTargetDir,
+        #[Autowire(param: 'kernel.project_dir')] private readonly string $projectDir,
+        #[Autowire(param: 'contao.image.target_dir')] private readonly string $imageTargetDir,
     ) {
     }
 
     public function __invoke(Request $request): Response
     {
-        $this->framework->initialize();
-        $path = urldecode($request->query->get('path'));
+        $this->initializeContaoFramework();
+        System::loadLanguageFile('default');
 
-        if (!$this->filesystem->exists($this->projectDir.'/'.$path) || !is_file($this->projectDir.'/'.$path)) {
+        $path = urldecode($request->query->get('path'));
+        $filesModel = FilesModel::findByPath($path);
+
+        if (!$filesModel || 'file' !== $filesModel->type || !$this->filesystem->exists($this->projectDir.'/'.$path)) {
             throw new NotFoundHttpException('File "'.$path.'" was not found.');
         }
 
-        if (!$this->authorizationChecker->isGranted('contao_user.filemounts', \dirname($path)) || !$this->authorizationChecker->isGranted('contao_user.fop', 'f3')) {
-            throw new AccessDeniedException('No permissions to access "'.\dirname($path).'" or delete files.');
-        }
+        $this->denyAccessUnlessGranted(ContaoCorePermissions::DC_PREFIX.'tl_files', new DeleteAction('tl_files', $filesModel->row()));
 
         $assetsDir = ltrim(str_replace($this->projectDir, '', $this->imageTargetDir), '/');
 
         $finder = (new Finder())
             ->in($assetsDir)
             ->files()
-            ->name(sprintf('%s-*', pathinfo($path, PATHINFO_FILENAME)))
+            ->name(\sprintf('%s-*', pathinfo($path, PATHINFO_FILENAME)))
         ;
 
         $assets = [];
@@ -67,17 +68,17 @@ class ImageDeleteController extends AbstractBackendController
 
             if (\in_array($path, $ids, true)) {
                 $imagesToDelete[] = $path;
+                $filesModel->delete();
             }
 
             $imagesToDelete = array_map(fn ($file) => $this->projectDir.'/'.$file, $imagesToDelete);
             $this->filesystem->remove($imagesToDelete);
 
-            return new RedirectResponse($this->router->generate('contao_backend', ['do' => 'files']));
+            return new RedirectResponse($this->generateUrl('contao_backend', ['do' => 'files']));
         }
 
-        return $this->render('@Terminal42ImageDelete/image-delete.html.twig', [
-            'request_token' => $this->csrfTokenManager->getDefaultTokenValue(),
-            'back' => $this->router->generate('contao_backend', ['do' => 'files']),
+        return $this->render('@Contao/backend/image-delete.html.twig', [
+            'back' => $this->generateUrl('contao_backend', ['do' => 'files']),
             'file' => $path,
             'assets' => $assets,
         ]);

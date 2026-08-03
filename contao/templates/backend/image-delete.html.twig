@@ -1,5 +1,5 @@
 {% trans_default_domain 'terminal42_image_delete' %}
-{% extends "@Contao/be_main.html.twig" %}
+{% extends '@Contao/be_main.html.twig' %}
 
 {% block main_content %}
     <div id="tl_buttons">
@@ -9,7 +9,7 @@
     <form id="tl_select" class="tl_form unselectable" method="post" novalidate>
         <div class="tl_formbody_edit">
             <input type="hidden" name="FORM_SUBMIT" value="terminal42_image_delete">
-            <input type="hidden" name="REQUEST_TOKEN" value="{{ request_token }}">
+            <input type="hidden" name="REQUEST_TOKEN" value="{{ contao.request_token }}">
 
             <div class="tl_listing_container list_view" id="tl_listing">
 
